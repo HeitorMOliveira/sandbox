@@ -1,18 +1,24 @@
 package creativity.sandbox.service;
 
 import creativity.sandbox.domain.book.Book;
+import creativity.sandbox.domain.book.BookCreationDTO;
+import creativity.sandbox.domain.book.BookDTO;
+import creativity.sandbox.domain.book.BookUpdateDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
 
-    Book findById(int id);
+    BookDTO findById(int id);
 
-    Book save(Book book);
+    BookDTO save(BookCreationDTO book);
 
-    List<Book> findAll();
+    List<BookDTO> findAll();
 
     void delete(int id);
 
-    void update(int id, Book newBook);
+    void update(int id, BookUpdateDTO newBook);
+
+    Optional<Book> findByTitle(String title);
 }

@@ -14,9 +14,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,11 +37,12 @@ public class Author {
     private String name;
     private String surname;
     private int age;
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     @OneToMany(mappedBy = "author")
-    private Set<Book> books = new HashSet<>();
+    private List<Book> books = new ArrayList<>();
 
 }
-    //Todo ajustar para usar de alguma forma uuid e id juntos
-    //@Id
-    //@UuidGenerator
-    //private UUID uuid;
+//Todo ajustar para usar de alguma forma uuid e id juntos
+//@Id
+//@UuidGenerator
+//private UUID uuid;

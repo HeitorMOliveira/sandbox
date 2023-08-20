@@ -14,9 +14,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,7 +36,8 @@ public class Category {
     private Integer id;
     private String name;
 
+    @Cascade({CascadeType.PERSIST})
     @ManyToMany(mappedBy = "categories")
-    private Set<Book> books = new HashSet<>();
+    private List<Book> books = new ArrayList<>();
 
 }

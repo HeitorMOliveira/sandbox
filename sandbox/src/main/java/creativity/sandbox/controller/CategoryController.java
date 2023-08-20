@@ -1,7 +1,9 @@
 package creativity.sandbox.controller;
 
 
-import creativity.sandbox.domain.category.Category;
+import creativity.sandbox.domain.category.CategoryCreationDTO;
+import creativity.sandbox.domain.category.CategoryDTO;
+import creativity.sandbox.domain.category.CategoryUpdateDTO;
 import creativity.sandbox.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,12 +28,12 @@ public class CategoryController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Category findById(@PathVariable int id) {
+    public CategoryDTO findById(@PathVariable int id) {
         return service.findById(id);
     }
 
     @GetMapping
-    public List<Category> findAll() {
+    public List<CategoryDTO> findAll() {
         return service.findAll();
     }
 
@@ -41,12 +43,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category save(@RequestBody Category entity) {
+    public CategoryDTO save(@RequestBody CategoryCreationDTO entity) {
         return service.save(entity);
     }
 
     @PutMapping(path = "/{id}")
-    public void update(@PathVariable int id, @RequestBody Category entity) {
+    public void update(@PathVariable int id, @RequestBody CategoryUpdateDTO entity) {
         service.update(id, entity);
     }
 }

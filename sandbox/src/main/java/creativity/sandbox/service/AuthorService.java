@@ -1,20 +1,22 @@
 package creativity.sandbox.service;
 
-import creativity.sandbox.domain.author.Author;
+import creativity.sandbox.domain.author.AuthorCreationDTO;
+import creativity.sandbox.domain.author.AuthorDTO;
+import creativity.sandbox.domain.author.AuthorUpdateDTO;
 
 import java.util.List;
 
 public interface AuthorService {
 
-    Author findById(int id);
+    AuthorDTO findById(int id);
 
-    Author save(Author author);
+    AuthorDTO save(AuthorCreationDTO author);
 
-    List<Author> findAll();
+    List<AuthorDTO> findAll();
 
     void delete(int id);
 
-    void update(int id, Author newAuthor);
+    void update(int id, AuthorUpdateDTO newAuthor);
 
 
 }
