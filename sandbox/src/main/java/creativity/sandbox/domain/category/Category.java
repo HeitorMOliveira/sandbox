@@ -1,6 +1,7 @@
 package creativity.sandbox.domain.category;
 
 import creativity.sandbox.domain.book.Book;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,8 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +35,7 @@ public class Category {
     private Integer id;
     private String name;
 
-    @Cascade({CascadeType.PERSIST})
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Book> books = new ArrayList<>();
 
 }

@@ -1,5 +1,6 @@
 package creativity.sandbox.service;
 
+import creativity.sandbox.controller.exceptions.DataIntegrityException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
 import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.author.Author;
@@ -7,15 +8,12 @@ import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
 import creativity.sandbox.domain.book.Book;
-import creativity.sandbox.domain.book.BookCreationDTO;
-import creativity.sandbox.domain.book.BookUpdateDTO;
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,13 +34,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDTO save(AuthorCreationDTO author) {
         Author authorEntity = mapper.AuthorCreationDTOToEntity(author);
-        if (author.getBooks() != null && !author.getBooks().isEmpty()) {
-            List<Book> books = author.getBooks().stream()
-                    .map(this::getExistingOrNewBook)
-                    .collect(Collectors.toList());
-
-            authorEntity.setBooks(books);
-        }
         Author saved = authorRepository.save(authorEntity);
 
         return mapper.authorDTOBuilder(saved);
@@ -55,23 +46,22 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void delete(int id) {
-        if (findById(id) != null) {
+        try {
+            Author author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            for (Book b: author.getBooks()) {
+                b.setAuthor(null);
+            }
             authorRepository.deleteById(id);
+        } catch (
+                DataIntegrityException e) {
+            throw new DataIntegrityException("It's not possible to delete a Author with books still associated.", e);
         }
+
     }
 
     @Override
     public void update(int id, AuthorUpdateDTO newAuthor) {
         Author authorToUpdate = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-
-        if (!newAuthor.getBooks().isEmpty()) {
-            List<Book> books = newAuthor.getBooks().stream()
-                    .map(this::getExistingOrNewBook)
-                    .collect(Collectors.toList());
-
-            authorToUpdate.setBooks(books);
-        }
-
         try {
             updateAuthorDetails(authorToUpdate, newAuthor);
             authorRepository.save(authorToUpdate);
@@ -84,22 +74,5 @@ public class AuthorServiceImpl implements AuthorService {
         authorToUpdate.setAge(newAuthor.getAge());
         authorToUpdate.setName(newAuthor.getName());
         authorToUpdate.setSurname(newAuthor.getSurname());
-        authorToUpdate.setBooks(newAuthor.getBooks().stream().map(mapper::bookUpdateDTOToEntity).collect(Collectors.toList()));
-    }
-
-    private <T> Book getExistingOrNewBook(T bookDTO) {
-        String title = getDtoTitle(bookDTO);
-        Optional<Book> existingBook = bookRepository.findByTitle(title);
-
-        return existingBook.orElseGet(() -> bookRepository.save((Book) bookDTO));
-    }
-
-    private <T> String getDtoTitle(T dto) {
-        if (dto instanceof BookCreationDTO) {
-            return ((BookCreationDTO) dto).getTitle();
-        } else if (dto instanceof BookUpdateDTO) {
-            return ((BookUpdateDTO) dto).getTitle();
-        }
-        throw new IllegalArgumentException("Unsupported DTO type");
     }
 }

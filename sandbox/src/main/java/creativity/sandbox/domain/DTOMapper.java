@@ -26,13 +26,24 @@ public class DTOMapper {
                 .map(this::categoryDTOBuilder)
                 .toList();
 
-        return BookDTO.builder()
+        BookDTO.BookDTOBuilder bookDTO = BookDTO.builder()
                 .title(book.getTitle())
                 .price(book.getPrice())
                 .identification(book.getIdentification())
                 .tags(book.getTags())
-                .categories(categoryList)
-                .build();
+                .categories(categoryList);
+
+        if (book.getAuthor() != null) {
+            bookDTO.author(AuthorDTO.builder()
+                    .name(book.getAuthor().getName())
+                    .surname(book.getAuthor().getSurname())
+                    .age(book.getAuthor().getAge())
+                    .build());
+        }
+
+
+
+        return bookDTO.build();
     }
 
     public Book bookCreationDTOToEntity(BookCreationDTO bookDTO) {

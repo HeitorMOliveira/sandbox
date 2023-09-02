@@ -1,5 +1,6 @@
 package creativity.sandbox.service;
 
+import creativity.sandbox.controller.exceptions.DataIntegrityException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
 import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.category.Category;
@@ -42,8 +43,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(int id) {
-        if (findById(id) != null) {
+        findById(id);
+        try {
             categoryRepository.deleteById(id);
+        } catch (DataIntegrityException e) {
+            throw new DataIntegrityException("It's not possible to delete a category with books still associated.", e);
         }
     }
 
