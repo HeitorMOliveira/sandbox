@@ -10,6 +10,7 @@ import creativity.sandbox.domain.category.CategoryUpdateDTO;
 import creativity.sandbox.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDTO save(CategoryCreationDTO category) {
         return mapper.categoryDTOBuilder(categoryRepository.save(mapper.categoryCreationDTOToEntity(category)));
     }
@@ -42,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         findById(id);
         try {
@@ -52,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void update(int id, CategoryUpdateDTO newCategory) {
         Category categoryToUpdate = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 

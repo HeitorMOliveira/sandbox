@@ -13,10 +13,10 @@ import creativity.sandbox.domain.category.CategoryUpdateDTO;
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import creativity.sandbox.repository.CategoryRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +45,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDTO save(BookCreationDTO book) {
         Book bookCreated = mapper.bookCreationDTOToEntity(book);
 
@@ -84,6 +85,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         if (findById(id) != null) {
             bookRepository.deleteById(id);

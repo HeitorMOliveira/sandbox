@@ -12,6 +12,7 @@ import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +29,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDTO findById(int id) {
-        return mapper.authorDTOBuilder(authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+        return mapper.authorDTOBuilder(authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
     @Override
+    @Transactional
     public AuthorDTO save(AuthorCreationDTO author) {
         Author authorEntity = mapper.AuthorCreationDTOToEntity(author);
         Author saved = authorRepository.save(authorEntity);
@@ -45,6 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         try {
             Author author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -60,6 +64,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public void update(int id, AuthorUpdateDTO newAuthor) {
         Author authorToUpdate = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         try {
@@ -71,8 +76,14 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     private void updateAuthorDetails(Author authorToUpdate, AuthorUpdateDTO newAuthor) {
-        authorToUpdate.setAge(newAuthor.getAge());
-        authorToUpdate.setName(newAuthor.getName());
-        authorToUpdate.setSurname(newAuthor.getSurname());
+        if (newAuthor.getName() != null) {
+            authorToUpdate.setName(newAuthor.getName());
+        }
+        if (newAuthor.getAge() != -1) {
+            authorToUpdate.setAge(newAuthor.getAge());
+        }
+        if (newAuthor.getSurname() != null) {
+            authorToUpdate.setSurname(newAuthor.getSurname());
+        }
     }
 }
