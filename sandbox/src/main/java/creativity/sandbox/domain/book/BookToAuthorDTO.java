@@ -1,6 +1,5 @@
 package creativity.sandbox.domain.book;
 
-import creativity.sandbox.domain.author.AuthorToBookDTO;
 import creativity.sandbox.domain.category.CategoryToBookDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,12 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookDTO {
-    private int id;
+public class BookToAuthorDTO {
     private String title;
-    private String identification;
-    private AuthorToBookDTO author;
     private Double price;
-    private List<String> tags;
     private List<CategoryToBookDTO> categories;
 }

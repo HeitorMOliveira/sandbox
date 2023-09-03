@@ -3,27 +3,29 @@ package creativity.sandbox.domain;
 import creativity.sandbox.domain.author.Author;
 import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
+import creativity.sandbox.domain.author.AuthorToBookDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
 import creativity.sandbox.domain.book.Book;
 import creativity.sandbox.domain.book.BookCreationDTO;
 import creativity.sandbox.domain.book.BookDTO;
+import creativity.sandbox.domain.book.BookToAuthorDTO;
 import creativity.sandbox.domain.book.BookUpdateDTO;
 import creativity.sandbox.domain.category.Category;
 import creativity.sandbox.domain.category.CategoryCreationDTO;
 import creativity.sandbox.domain.category.CategoryDTO;
+import creativity.sandbox.domain.category.CategoryToBookDTO;
 import creativity.sandbox.domain.category.CategoryUpdateDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class DTOMapper {
     //Book DTO's
     public BookDTO bookDTOBuilder(Book book) {
-        List<CategoryDTO> categoryList = book.getCategories().stream()
-                .map(this::categoryDTOBuilder)
+        List<CategoryToBookDTO> categoryList = book.getCategories().stream()
+                .map(this::categoryToBookDTO)
                 .toList();
 
         BookDTO.BookDTOBuilder bookDTO = BookDTO.builder()
@@ -31,16 +33,15 @@ public class DTOMapper {
                 .price(book.getPrice())
                 .identification(book.getIdentification())
                 .tags(book.getTags())
+                .id(book.getId())
                 .categories(categoryList);
 
         if (book.getAuthor() != null) {
-            bookDTO.author(AuthorDTO.builder()
+            bookDTO.author(AuthorToBookDTO.builder()
                     .name(book.getAuthor().getName())
                     .surname(book.getAuthor().getSurname())
-                    .age(book.getAuthor().getAge())
                     .build());
         }
-
 
 
         return bookDTO.build();
@@ -73,6 +74,10 @@ public class DTOMapper {
                 .build();
     }
 
+    public CategoryToBookDTO categoryToBookDTO(Category category) {
+        return CategoryToBookDTO.builder().name(category.getName()).build();
+    }
+
     public Category categoryCreationDTOToEntity(CategoryCreationDTO categoryDTO) {
         return Category.builder()
                 .name(categoryDTO.getName())
@@ -87,18 +92,28 @@ public class DTOMapper {
     //Author DTO's
 
     public AuthorDTO authorDTOBuilder(Author author) {
-        List<BookDTO> bookDTOs = new ArrayList<>();
-        if (author.getBooks() != null) {
-            bookDTOs = author.getBooks().stream()
-                    .map(this::bookDTOBuilder)
-                    .collect(Collectors.toList());
-        }
-        return AuthorDTO.builder()
+        AuthorDTO.AuthorDTOBuilder authorDTO = AuthorDTO.builder()
+                .id(author.getId())
                 .age(author.getAge())
                 .name(author.getName())
-                .surname(author.getSurname())
-                .books(bookDTOs)
-                .build();
+                .surname(author.getSurname());
+
+        if (author.getBooks() != null && !author.getBooks().isEmpty()) {
+            List<BookToAuthorDTO> bookDTOs = new ArrayList<>();
+            for (Book b : author.getBooks()) {
+                BookToAuthorDTO bookDTO = BookToAuthorDTO.builder()
+                        .price(b.getPrice())
+                        .title(b.getTitle())
+                        .categories(b.getCategories().stream()
+                                .map(this::categoryToBookDTO)
+                                .toList())
+                        .build();
+                bookDTOs.add(bookDTO);
+            }
+            authorDTO.books(bookDTOs);
+        }
+
+        return authorDTO.build();
     }
 
 

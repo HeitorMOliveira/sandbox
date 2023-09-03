@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CategoryDTO {
-    private int id;
+public class CategoryToBookDTO {
     private String name;
 }

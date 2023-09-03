@@ -1,4 +1,4 @@
-package creativity.sandbox.domain.category;
+package creativity.sandbox.domain.author;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CategoryDTO {
-    private int id;
+public class AuthorToBookDTO {
     private String name;
+    private String surname;
 }
