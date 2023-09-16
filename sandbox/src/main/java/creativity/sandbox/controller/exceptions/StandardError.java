@@ -1,25 +1,17 @@
 package creativity.sandbox.controller.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data
+@SuperBuilder
 public class StandardError {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-    private Instant timestamp;
-    private Integer status;
-    private String error;
+    private String title;
+    private int status;
+    private String details;
     private String message;
-    private String path;
+    private LocalDateTime timestamp;
 }

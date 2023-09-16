@@ -5,6 +5,7 @@ import creativity.sandbox.domain.category.CategoryCreationDTO;
 import creativity.sandbox.domain.category.CategoryDTO;
 import creativity.sandbox.domain.category.CategoryUpdateDTO;
 import creativity.sandbox.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,12 +44,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDTO save(@RequestBody CategoryCreationDTO entity) {
+    public CategoryDTO save(@RequestBody @Valid CategoryCreationDTO entity) {
         return service.save(entity);
     }
 
     @PutMapping(path = "/{id}")
-    public void update(@PathVariable int id, @RequestBody CategoryUpdateDTO entity) {
+    public void update(@PathVariable int id, @RequestBody @Valid CategoryUpdateDTO entity) {
         service.update(id, entity);
     }
 }

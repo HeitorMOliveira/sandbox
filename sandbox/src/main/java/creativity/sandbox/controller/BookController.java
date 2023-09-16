@@ -4,6 +4,7 @@ import creativity.sandbox.domain.book.BookCreationDTO;
 import creativity.sandbox.domain.book.BookDTO;
 import creativity.sandbox.domain.book.BookUpdateDTO;
 import creativity.sandbox.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -39,12 +39,12 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDTO save(@RequestBody BookCreationDTO entity) {
+    public BookDTO save(@RequestBody @Valid BookCreationDTO entity) {
         return service.save(entity);
     }
 
     @PutMapping(path = "/{id}")
-    public void update(@PathVariable int id, @RequestBody BookUpdateDTO entity) {
+    public void update(@PathVariable int id, @RequestBody @Valid BookUpdateDTO entity) {
         service.update(id, entity);
     }
 }

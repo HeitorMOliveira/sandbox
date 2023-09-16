@@ -12,11 +12,10 @@ public class DataBuilderForTesting {
     //Book
     public static Book createBook() {
         return Book.builder()
-                .title("title")
+                .title("Mushoku Tensei")
                 .price(100.0)
-                .identification("identification")
-                .tags(Arrays.asList("tag1", "tag2"))
-                .id(1)
+                .identification("#4124")
+                .tags(Arrays.asList("isekai", "other world"))
                 .categories(Collections.singletonList(createCategory()))
                 .build();
     }
@@ -24,7 +23,7 @@ public class DataBuilderForTesting {
     //Category
     public static Category createCategory() {
         return Category.builder()
-                .name("name")
+                .name("Fantasy")
                 .build();
     }
 
@@ -32,8 +31,8 @@ public class DataBuilderForTesting {
     //Author
     public static Author createAuthor() {
         return Author.builder()
-                .surname("surname")
-                .name("name")
+                .name("Rifujin")
+                .surname("na Magonote")
                 .age(30)
                 .build();
     }

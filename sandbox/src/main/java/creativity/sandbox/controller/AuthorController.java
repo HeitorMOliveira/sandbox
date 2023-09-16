@@ -4,6 +4,7 @@ import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
 import creativity.sandbox.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,12 +40,12 @@ public class AuthorController {
     }
 
     @PostMapping
-    public AuthorDTO save(@RequestBody AuthorCreationDTO entity) {
+    public AuthorDTO save(@RequestBody @Valid AuthorCreationDTO entity) {
         return service.save(entity);
     }
 
     @PutMapping(path = "/{id}")
-    public void update(@PathVariable int id, @RequestBody AuthorUpdateDTO entity) {
+    public void update(@PathVariable int id, @RequestBody @Valid AuthorUpdateDTO entity) {
         service.update(id, entity);
     }
 
