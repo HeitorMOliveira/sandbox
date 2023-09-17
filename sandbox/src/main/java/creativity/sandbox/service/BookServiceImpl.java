@@ -140,8 +140,8 @@ public class BookServiceImpl implements BookService {
         bookToUpdate.setTitle(newBook.getTitle());
     }
 
-    public Optional<Book> findByTitle(String name) {
-        return bookRepository.findByTitle(name);
+    public BookDTO findByTitle(String title) {
+        return mapper.bookDTOBuilder(bookRepository.findByTitle(title).orElseThrow(() -> new ResourceNotFoundException(title)));
     }
 
 }

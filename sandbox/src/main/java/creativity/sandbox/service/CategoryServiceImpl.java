@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,8 +67,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> findByName(String name) {
-        return categoryRepository.findByName(name);
+    public CategoryDTO findByName(String name) {
+        return mapper.categoryDTOBuilder(categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
     }
 
     private void updateCategoryDetails(Category categoryToUpdate, CategoryUpdateDTO newCategory) {

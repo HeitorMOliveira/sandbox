@@ -75,6 +75,11 @@ public class AuthorServiceImpl implements AuthorService {
         }
     }
 
+    @Override
+    public AuthorDTO findByName(String name) {
+        return mapper.authorDTOBuilder(authorRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
+    }
+
     private void updateAuthorDetails(Author authorToUpdate, AuthorUpdateDTO newAuthor) {
         if (newAuthor.getName() != null) {
             authorToUpdate.setName(newAuthor.getName());

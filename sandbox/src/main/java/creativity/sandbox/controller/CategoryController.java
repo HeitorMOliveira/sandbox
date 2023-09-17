@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,17 +40,28 @@ public class CategoryController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CategoryDTO save(@RequestBody @Valid CategoryCreationDTO entity) {
         return service.save(entity);
     }
 
     @PutMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable int id, @RequestBody @Valid CategoryUpdateDTO entity) {
         service.update(id, entity);
     }
+
+    @GetMapping(path = "/findByName")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryDTO findByName(@RequestParam String name) {
+        return service.findByName(name);
+    }
+
+
 }

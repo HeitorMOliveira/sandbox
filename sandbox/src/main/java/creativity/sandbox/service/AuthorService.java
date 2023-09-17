@@ -18,5 +18,7 @@ public interface AuthorService {
 
     void update(int id, AuthorUpdateDTO newAuthor);
 
+    AuthorDTO findByName(String name);
+
 
 }

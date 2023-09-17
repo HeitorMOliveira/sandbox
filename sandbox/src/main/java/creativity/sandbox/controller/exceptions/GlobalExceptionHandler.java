@@ -73,6 +73,4 @@ public class GlobalExceptionHandler {
                         .build(), HttpStatus.BAD_REQUEST
         );
     }
-
-
 }
