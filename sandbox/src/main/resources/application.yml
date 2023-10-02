@@ -7,6 +7,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  messages:
+    basename: messages
+  mvc:
+    locale: en_US
 
 logging:
   level:

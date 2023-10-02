@@ -1,5 +1,6 @@
 package creativity.sandbox.service;
 
+import creativity.sandbox.controller.exceptions.EntityCreationExistsException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
 import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.author.Author;
@@ -15,13 +16,14 @@ import creativity.sandbox.repository.BookRepository;
 import creativity.sandbox.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +49,10 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDTO save(BookCreationDTO book) {
+        if (bookRepository.findByTitle(book.getTitle()).isPresent()) {
+            throw new EntityCreationExistsException("Book already exists: " + book.getTitle());
+        }
+
         Book bookCreated = mapper.bookCreationDTOToEntity(book);
 
         if (book.getCategories() != null) {
@@ -60,16 +66,16 @@ public class BookServiceImpl implements BookService {
                     categoriesToSave.add(byName.get());
                 }
                 bookCreated.setCategories(categoriesToSave);
-
-                if (book.getAuthor() != null) {
-                    Author author = authorRepository.findByName(book.getAuthor().getName()).orElse(authorRepository.save(Author.builder()
-                            .name(book.getAuthor().getName())
-                            .age(book.getAuthor().getAge())
-                            .surname(book.getAuthor().getSurname())
-                            .build()));
-                    bookCreated.setAuthor(author);
-                }
             }
+        }
+
+        if (book.getAuthor() != null) {
+            Author author = authorRepository.findByName(book.getAuthor().getName()).orElse(authorRepository.save(Author.builder()
+                    .name(book.getAuthor().getName())
+                    .age(book.getAuthor().getAge())
+                    .surname(book.getAuthor().getSurname())
+                    .build()));
+            bookCreated.setAuthor(author);
         }
 
         return mapper.bookDTOBuilder(bookRepository.save(bookCreated));
@@ -77,11 +83,8 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public List<BookDTO> findAll() {
-        return bookRepository.findAll()
-                .stream()
-                .map(mapper::bookDTOBuilder)
-                .collect(Collectors.toList());
+    public Page<BookDTO> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable).map(mapper::bookDTOBuilder);
     }
 
     @Override
@@ -142,6 +145,11 @@ public class BookServiceImpl implements BookService {
 
     public BookDTO findByTitle(String title) {
         return mapper.bookDTOBuilder(bookRepository.findByTitle(title).orElseThrow(() -> new ResourceNotFoundException(title)));
+    }
+
+    @Override
+    public Page<BookDTO> findByAuthorName(String authorName, Pageable pageable) {
+        return bookRepository.findByAuthorName(authorName, pageable).map(mapper::bookDTOBuilder);
     }
 
 }

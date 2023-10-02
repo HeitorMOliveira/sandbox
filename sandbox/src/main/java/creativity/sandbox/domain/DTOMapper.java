@@ -34,7 +34,8 @@ public class DTOMapper {
                 .identification(book.getIdentification())
                 .tags(book.getTags())
                 .id(book.getId())
-                .categories(categoryList);
+                .categories(categoryList)
+                .id(book.getId());
 
         if (book.getAuthor() != null) {
             bookDTO.author(AuthorToBookDTO.builder()
@@ -70,6 +71,7 @@ public class DTOMapper {
 
     public CategoryDTO categoryDTOBuilder(Category category) {
         return CategoryDTO.builder()
+                .id(category.getId())
                 .name(category.getName())
                 .build();
     }

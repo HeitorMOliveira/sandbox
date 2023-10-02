@@ -3,8 +3,8 @@ package creativity.sandbox.service;
 import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AuthorService {
 
@@ -12,7 +12,7 @@ public interface AuthorService {
 
     AuthorDTO save(AuthorCreationDTO author);
 
-    List<AuthorDTO> findAll();
+    Page<AuthorDTO> findAll(Pageable pageable);
 
     void delete(int id);
 

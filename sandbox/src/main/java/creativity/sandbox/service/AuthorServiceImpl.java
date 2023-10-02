@@ -1,6 +1,7 @@
 package creativity.sandbox.service;
 
 import creativity.sandbox.controller.exceptions.DataIntegrityException;
+import creativity.sandbox.controller.exceptions.EntityCreationExistsException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
 import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.author.Author;
@@ -11,11 +12,10 @@ import creativity.sandbox.domain.book.Book;
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +36,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     public AuthorDTO save(AuthorCreationDTO author) {
+        if (authorRepository.findByName(author.getName()).isPresent()) {
+            throw new EntityCreationExistsException("Author already exists: " + author.getName());
+        }
         Author authorEntity = mapper.AuthorCreationDTOToEntity(author);
         Author saved = authorRepository.save(authorEntity);
 
@@ -43,8 +46,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDTO> findAll() {
-        return authorRepository.findAll().stream().map(mapper::authorDTOBuilder).collect(Collectors.toList());
+    public Page<AuthorDTO> findAll(Pageable pageable) {
+        return authorRepository.findAll(pageable).map(mapper::authorDTOBuilder);
     }
 
     @Override

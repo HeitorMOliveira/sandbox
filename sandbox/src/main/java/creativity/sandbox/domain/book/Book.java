@@ -55,4 +55,6 @@ public class Book {
     private List<Category> categories = new ArrayList<>();
 
 
+    //TODO in the future, make the identification mean something with a prefix
+    // to diferenciate (ex: manga being MN-XXXX, other books being OB-XXXX)
 }

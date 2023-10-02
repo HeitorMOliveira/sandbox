@@ -3,8 +3,8 @@ package creativity.sandbox.service;
 import creativity.sandbox.domain.book.BookCreationDTO;
 import creativity.sandbox.domain.book.BookDTO;
 import creativity.sandbox.domain.book.BookUpdateDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BookService {
 
@@ -12,11 +12,13 @@ public interface BookService {
 
     BookDTO save(BookCreationDTO book);
 
-    List<BookDTO> findAll();
+    Page<BookDTO> findAll(Pageable pageable);
 
     void delete(int id);
 
     void update(int id, BookUpdateDTO newBook);
 
     BookDTO findByTitle(String title);
+
+    Page<BookDTO> findByAuthorName(String authorName, Pageable pageable);
 }

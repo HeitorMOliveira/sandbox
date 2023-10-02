@@ -1,6 +1,7 @@
 package creativity.sandbox.service;
 
 import creativity.sandbox.controller.exceptions.DataIntegrityException;
+import creativity.sandbox.controller.exceptions.EntityCreationExistsException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
 import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.category.Category;
@@ -9,11 +10,10 @@ import creativity.sandbox.domain.category.CategoryDTO;
 import creativity.sandbox.domain.category.CategoryUpdateDTO;
 import creativity.sandbox.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +32,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDTO save(CategoryCreationDTO category) {
+        if (categoryRepository.findByName(category.getName()).isPresent()) {
+            throw new EntityCreationExistsException("Category already exists: " + category.getName());
+        }
         return mapper.categoryDTOBuilder(categoryRepository.save(mapper.categoryCreationDTOToEntity(category)));
     }
 
     @Override
-    public List<CategoryDTO> findAll() {
-        return categoryRepository.findAll().stream()
-                .map(mapper::categoryDTOBuilder)
-                .collect(Collectors.toList());
+    public Page<CategoryDTO> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable)
+                .map(mapper::categoryDTOBuilder);
     }
 
     @Override

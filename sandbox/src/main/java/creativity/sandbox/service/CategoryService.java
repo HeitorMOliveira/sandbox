@@ -3,8 +3,8 @@ package creativity.sandbox.service;
 import creativity.sandbox.domain.category.CategoryCreationDTO;
 import creativity.sandbox.domain.category.CategoryDTO;
 import creativity.sandbox.domain.category.CategoryUpdateDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
 
@@ -12,7 +12,7 @@ public interface CategoryService {
 
     CategoryDTO save(CategoryCreationDTO category);
 
-    List<CategoryDTO> findAll();
+    Page<CategoryDTO> findAll(Pageable pageable);
 
     void delete(int id);
 

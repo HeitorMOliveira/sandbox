@@ -31,12 +31,9 @@ public class BookCreationDTO {
     @Size(min = 5, max = 80)
     private String identification;
 
-    @NotNull
-    @NotEmpty(message = "Author cannot be empty")
     private AuthorCreationDTO author;
 
     @NotNull
-    @NotEmpty(message = "Price cannot be empty")
     @Min(1)
     private Double price;
 
