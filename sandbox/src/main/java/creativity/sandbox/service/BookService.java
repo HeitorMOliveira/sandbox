@@ -21,4 +21,5 @@ public interface BookService {
     BookDTO findByTitle(String title);
 
     Page<BookDTO> findByAuthorName(String authorName, Pageable pageable);
+    Page<BookDTO> findByCategoryName(String categoryName, Pageable pageable);
 }

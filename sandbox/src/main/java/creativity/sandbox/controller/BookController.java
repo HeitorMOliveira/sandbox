@@ -68,6 +68,11 @@ public class BookController {
     public Page<BookDTO> findBooksByAuthorName(@RequestParam String authorName, Pageable pageable) {
         return service.findByAuthorName(authorName, pageable);
     }
+    @GetMapping(path = "/categoryName")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<BookDTO> findBooksByCategoryName(@RequestParam String categoryName, Pageable pageable) {
+        return service.findByCategoryName(categoryName, pageable);
+    }
 
 
 }

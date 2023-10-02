@@ -9,6 +9,7 @@ import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
 import creativity.sandbox.domain.book.Book;
+import creativity.sandbox.domain.book.BookDTO;
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +85,13 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDTO findByName(String name) {
         return mapper.authorDTOBuilder(authorRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
+    }
+
+    @Override
+    public List<BookDTO> findAllBooksByAuthor(int id) {
+        return authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id))
+                .getBooks().stream().map(mapper::bookDTOBuilder).collect(Collectors.toList());
+
     }
 
     private void updateAuthorDetails(Author authorToUpdate, AuthorUpdateDTO newAuthor) {

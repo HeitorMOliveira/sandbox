@@ -3,6 +3,7 @@ package creativity.sandbox.controller;
 import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
+import creativity.sandbox.domain.book.BookDTO;
 import creativity.sandbox.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/author")
@@ -61,5 +64,11 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.OK)
     public AuthorDTO findById(@RequestParam String name) {
         return service.findByName(name);
+    }
+
+    @GetMapping(path = "/books")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> findAllBooksById(@RequestParam int id) {
+        return service.findAllBooksByAuthor(id);
     }
 }

@@ -73,4 +73,17 @@ public class GlobalExceptionHandler {
                         .build(), HttpStatus.BAD_REQUEST
         );
     }
+
+    @ExceptionHandler(EntityCreationExistsException.class)
+    public ResponseEntity<BadRequestExceptionDetails> resourceNotFoundException(EntityCreationExistsException e) {
+        return new ResponseEntity<>(
+                BadRequestExceptionDetails.builder()
+                        .timestamp(LocalDateTime.now())
+                        .message(e.getClass().getName())
+                        .status(HttpStatus.CONFLICT.value())
+                        .title("Repeated Data")
+                        .details(e.getMessage())
+                        .build(), HttpStatus.CONFLICT
+        );
+    }
 }

@@ -150,6 +150,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookDTO> findByAuthorName(String authorName, Pageable pageable) {
         return bookRepository.findByAuthorName(authorName, pageable).map(mapper::bookDTOBuilder);
+        //TODO make the search work using the full name too
+    }
+
+    @Override
+    public Page<BookDTO> findByCategoryName(String categoryName, Pageable pageable) {
+        return bookRepository.findByCategory(categoryName, pageable).map(mapper::bookDTOBuilder);
     }
 
 }
