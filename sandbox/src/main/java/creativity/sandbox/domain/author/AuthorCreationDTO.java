@@ -25,13 +25,10 @@ public class AuthorCreationDTO {
     @Size(min = 3, max = 100)
     private String name;
 
-    @NotNull
-    @NotEmpty(message = "Surname cannot be empty")
     @Size(min = 3, max = 100)
     private String surname;
 
     @NotNull
-    @NotEmpty(message = "age cannot be empty")
     @Min(10)
     @Max(100)
     private int age;

@@ -3,7 +3,7 @@ package creativity.sandbox.controller;
 import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
-import creativity.sandbox.domain.book.BookDTO;
+import creativity.sandbox.domain.book.TinyBookDTO;
 import creativity.sandbox.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +68,7 @@ public class AuthorController {
 
     @GetMapping(path = "/books")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> findAllBooksById(@RequestParam int id) {
+    public List<TinyBookDTO> findAllBooksById(@RequestParam int id) {
         return service.findAllBooksByAuthor(id);
     }
 }

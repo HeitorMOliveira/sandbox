@@ -3,7 +3,6 @@ package creativity.sandbox.service;
 import creativity.sandbox.controller.exceptions.DataIntegrityException;
 import creativity.sandbox.controller.exceptions.EntityCreationExistsException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
-import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.category.Category;
 import creativity.sandbox.domain.category.CategoryCreationDTO;
 import creativity.sandbox.domain.category.CategoryDTO;
@@ -15,18 +14,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static creativity.sandbox.domain.category.Category.categoryCreationDTOToEntity;
+import static creativity.sandbox.domain.category.Category.toDTO;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    private final DTOMapper mapper;
-
 
     @Override
     public CategoryDTO findById(int id) {
-        return mapper.categoryDTOBuilder(categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+        return toDTO(categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
     @Override
@@ -35,13 +35,13 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRepository.findByName(category.getName()).isPresent()) {
             throw new EntityCreationExistsException("Category already exists: " + category.getName());
         }
-        return mapper.categoryDTOBuilder(categoryRepository.save(mapper.categoryCreationDTOToEntity(category)));
+        return toDTO(categoryRepository.save(categoryCreationDTOToEntity(category)));
     }
 
     @Override
     public Page<CategoryDTO> findAll(Pageable pageable) {
         return categoryRepository.findAll(pageable)
-                .map(mapper::categoryDTOBuilder);
+                .map(Category::toDTO);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO findByName(String name) {
-        return mapper.categoryDTOBuilder(categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
+        return toDTO(categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
     }
 
     private void updateCategoryDetails(Category categoryToUpdate, CategoryUpdateDTO newCategory) {

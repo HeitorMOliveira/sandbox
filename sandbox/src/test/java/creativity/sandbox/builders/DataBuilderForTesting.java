@@ -23,6 +23,7 @@ public class DataBuilderForTesting {
     //Book
     public static Book createBook() {
         return Book.builder()
+                .id(1)
                 .title("Mushoku Tensei")
                 .price(100.0)
                 .identification("#4124")
@@ -72,6 +73,7 @@ public class DataBuilderForTesting {
     //Category
     public static Category createCategory() {
         return Category.builder()
+                .id(1)
                 .name("Fantasy")
                 .build();
     }
@@ -103,6 +105,7 @@ public class DataBuilderForTesting {
     //Author
     public static Author createAuthor() {
         return Author.builder()
+                .id(1)
                 .name("Rifujin")
                 .surname("na Magonote")
                 .age(30)

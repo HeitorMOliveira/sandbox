@@ -3,6 +3,7 @@ package creativity.sandbox.controller;
 import creativity.sandbox.domain.book.BookCreationDTO;
 import creativity.sandbox.domain.book.BookDTO;
 import creativity.sandbox.domain.book.BookUpdateDTO;
+import creativity.sandbox.domain.book.TinyBookDTO;
 import creativity.sandbox.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,7 @@ public class BookController {
     }
     @GetMapping(path = "/categoryName")
     @ResponseStatus(HttpStatus.OK)
-    public Page<BookDTO> findBooksByCategoryName(@RequestParam String categoryName, Pageable pageable) {
+    public Page<TinyBookDTO> findBooksByCategoryName(@RequestParam String categoryName, Pageable pageable) {
         return service.findByCategoryName(categoryName, pageable);
     }
 

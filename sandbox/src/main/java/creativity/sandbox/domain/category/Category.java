@@ -38,4 +38,24 @@ public class Category {
     @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Book> books = new ArrayList<>();
 
+
+    public static Category categoryCreationDTOToEntity(CategoryCreationDTO categoryDTO) {
+        return Category.builder()
+                .name(categoryDTO.getName())
+                .build();
+    }
+
+    public static CategoryDTO toDTO(Category category){
+        return CategoryDTO.builder()
+                .name(category.getName())
+                .id(category.getId())
+                .build();
+    }
+
+    public static CategoryToBookDTO categoryToBookDTO(Category category){
+        return CategoryToBookDTO.builder()
+                .name(category.getName())
+                .build();
+    }
+
 }

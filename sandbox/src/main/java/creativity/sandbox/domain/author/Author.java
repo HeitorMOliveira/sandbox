@@ -1,6 +1,8 @@
 package creativity.sandbox.domain.author;
 
 import creativity.sandbox.domain.book.Book;
+import creativity.sandbox.domain.book.BookToAuthorDTO;
+import creativity.sandbox.domain.category.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +41,38 @@ public class Author {
     @OneToMany(mappedBy = "author",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Book> books = new ArrayList<>();
 
+    public static AuthorDTO toDTO(Author author) {
+        AuthorDTO.AuthorDTOBuilder authorDTO = AuthorDTO.builder()
+                .id(author.getId())
+                .age(author.getAge())
+                .name(author.getName())
+                .surname(author.getSurname());
+
+        if (author.getBooks() != null && !author.getBooks().isEmpty()) {
+            List<BookToAuthorDTO> bookDTOs = new ArrayList<>();
+            for (Book b : author.getBooks()) {
+                BookToAuthorDTO bookDTO = BookToAuthorDTO.builder()
+                        .price(b.getPrice())
+                        .title(b.getTitle())
+                        .categories(b.getCategories().stream()
+                                .map(Category::categoryToBookDTO)
+                                .toList())
+                        .build();
+                bookDTOs.add(bookDTO);
+            }
+            authorDTO.books(bookDTOs);
+        }
+
+        return authorDTO.build();
+    }
+
+    public static Author authorCreationDTOToEntity(AuthorCreationDTO creationDTO) {
+        return Author.builder()
+                .age(creationDTO.getAge())
+                .name(creationDTO.getName())
+                .surname(creationDTO.getSurname())
+                .build();
+    }
 }
 //Todo ajustar para usar de alguma forma uuid e id juntos
 //@Id

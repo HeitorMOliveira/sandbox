@@ -3,13 +3,12 @@ package creativity.sandbox.service;
 import creativity.sandbox.controller.exceptions.DataIntegrityException;
 import creativity.sandbox.controller.exceptions.EntityCreationExistsException;
 import creativity.sandbox.controller.exceptions.ResourceNotFoundException;
-import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.domain.author.Author;
 import creativity.sandbox.domain.author.AuthorCreationDTO;
 import creativity.sandbox.domain.author.AuthorDTO;
 import creativity.sandbox.domain.author.AuthorUpdateDTO;
 import creativity.sandbox.domain.book.Book;
-import creativity.sandbox.domain.book.BookDTO;
+import creativity.sandbox.domain.book.TinyBookDTO;
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static creativity.sandbox.domain.author.Author.authorCreationDTOToEntity;
+import static creativity.sandbox.domain.author.Author.toDTO;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
@@ -29,11 +31,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final BookRepository bookRepository;
 
-    private final DTOMapper mapper;
-
     @Override
     public AuthorDTO findById(int id) {
-        return mapper.authorDTOBuilder(authorRepository.findById(id)
+        return toDTO(authorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
@@ -43,15 +43,15 @@ public class AuthorServiceImpl implements AuthorService {
         if (authorRepository.findByName(author.getName()).isPresent()) {
             throw new EntityCreationExistsException("Author already exists: " + author.getName());
         }
-        Author authorEntity = mapper.AuthorCreationDTOToEntity(author);
+        Author authorEntity = authorCreationDTOToEntity(author);
         Author saved = authorRepository.save(authorEntity);
 
-        return mapper.authorDTOBuilder(saved);
+        return toDTO(saved);
     }
 
     @Override
     public Page<AuthorDTO> findAll(Pageable pageable) {
-        return authorRepository.findAll(pageable).map(mapper::authorDTOBuilder);
+        return authorRepository.findAll(pageable).map(Author::toDTO);
     }
 
     @Override
@@ -84,13 +84,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDTO findByName(String name) {
-        return mapper.authorDTOBuilder(authorRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
+        return toDTO(authorRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException(name)));
     }
 
     @Override
-    public List<BookDTO> findAllBooksByAuthor(int id) {
+    public List<TinyBookDTO> findAllBooksByAuthor(int id) {
         return authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id))
-                .getBooks().stream().map(mapper::bookDTOBuilder).collect(Collectors.toList());
+                .getBooks().stream().map(Book::toTinyDTO).collect(Collectors.toList());
 
     }
 

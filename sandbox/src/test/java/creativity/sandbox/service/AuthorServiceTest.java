@@ -1,6 +1,5 @@
 package creativity.sandbox.service;
 
-import creativity.sandbox.domain.DTOMapper;
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,9 +18,6 @@ class AuthorServiceTest {
 
     @Mock
     private BookRepository bookRepository;
-
-    @Mock
-    private DTOMapper mapper;
 
     @InjectMocks
     private AuthorServiceImpl authorService;
