@@ -142,7 +142,6 @@ class CategoryServiceTest {
     @DisplayName("update throws a exception when a category doesn't exists")
     void updateThrowsException() {
         CategoryUpdateDTO newName = CategoryUpdateDTO.builder().name("new name").build();
-        Category category = createCategory();
         when(categoryRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> categoryService.update(1, newName));
