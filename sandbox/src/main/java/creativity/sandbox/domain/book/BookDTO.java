@@ -1,5 +1,6 @@
 package creativity.sandbox.domain.book;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import creativity.sandbox.domain.author.AuthorToBookDTO;
 import creativity.sandbox.domain.category.CategoryToBookDTO;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 public class BookDTO {
     private int id;

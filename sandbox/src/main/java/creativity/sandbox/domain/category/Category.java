@@ -35,7 +35,7 @@ public class Category {
     private Integer id;
     private String name;
 
-    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST})
     private List<Book> books = new ArrayList<>();
 
 
