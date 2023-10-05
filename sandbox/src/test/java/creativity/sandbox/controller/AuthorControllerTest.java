@@ -56,7 +56,7 @@ class AuthorControllerTest {
     @Test
     @DisplayName("returns a page with authors")
     void findAll() {
-        Page<AuthorDTO> categoryPage = new PageImpl<AuthorDTO>(List.of(createAuthorDTO()));
+        Page<AuthorDTO> categoryPage = new PageImpl<>(List.of(createAuthorDTO()));
         when(authorService.findAll(any())).thenReturn(categoryPage);
 
         Page<AuthorDTO> resultPage = authorController.findAll(any());

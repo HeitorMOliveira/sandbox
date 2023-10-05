@@ -57,7 +57,7 @@ class BookControllerTest {
     @Test
     @DisplayName("returns a page of books")
     void findAll() {
-        Page<BookDTO> bookPage = new PageImpl<BookDTO>(List.of(createBookDTO()));
+        Page<BookDTO> bookPage = new PageImpl<>(List.of(createBookDTO()));
         when(bookService.findAll(any())).thenReturn(bookPage);
 
         Page<BookDTO> resultPage = bookController.findAll(any());
@@ -125,7 +125,7 @@ class BookControllerTest {
     @Test
     @DisplayName("returns a page of books by a specific author name or surname")
     void findBooksByAuthorName() {
-        Page<BookDTO> bookPage = new PageImpl<BookDTO>(List.of(createBookDTO()));
+        Page<BookDTO> bookPage = new PageImpl<>(List.of(createBookDTO()));
 
         when(bookService.findByAuthorName(anyString(), any())).thenReturn(bookPage);
         Page<BookDTO> booksByAuthorName = bookController.findBooksByAuthorName(anyString(), any());
@@ -144,7 +144,7 @@ class BookControllerTest {
     @Test
     @DisplayName("returns a page of books by a specifc category name")
     void findBooksByCategoryName() {
-        Page<TinyBookDTO> bookPage = new PageImpl<TinyBookDTO>(List.of(createTinyBookDTO()));
+        Page<TinyBookDTO> bookPage = new PageImpl<>(List.of(createTinyBookDTO()));
 
         when(bookService.findByCategoryName(anyString(), any())).thenReturn(bookPage);
         Page<TinyBookDTO> booksByCategoryName = bookController.findBooksByCategoryName(anyString(), any());

@@ -52,7 +52,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("returns a page with categories")
     void findAll() {
-        Page<CategoryDTO> categoryPage = new PageImpl<CategoryDTO>(List.of(createCategoryDTO()));
+        Page<CategoryDTO> categoryPage = new PageImpl<>(List.of(createCategoryDTO()));
         when(categoryService.findAll(any())).thenReturn(categoryPage);
 
         Page<CategoryDTO> resultPage = categoryController.findAll(any());
