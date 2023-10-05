@@ -62,7 +62,7 @@ public class AuthorController {
 
     @GetMapping(path = "/findByName")
     @ResponseStatus(HttpStatus.OK)
-    public AuthorDTO findById(@RequestParam String name) {
+    public AuthorDTO findByName(@RequestParam String name) {
         return service.findByName(name);
     }
 

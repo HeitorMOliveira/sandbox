@@ -8,7 +8,9 @@ import creativity.sandbox.domain.author.AuthorUpdateDTO;
 import creativity.sandbox.domain.book.Book;
 import creativity.sandbox.domain.book.BookCreationDTO;
 import creativity.sandbox.domain.book.BookDTO;
+import creativity.sandbox.domain.book.BookToAuthorDTO;
 import creativity.sandbox.domain.book.BookUpdateDTO;
+import creativity.sandbox.domain.book.TinyBookDTO;
 import creativity.sandbox.domain.category.Category;
 import creativity.sandbox.domain.category.CategoryCreationDTO;
 import creativity.sandbox.domain.category.CategoryDTO;
@@ -17,6 +19,7 @@ import creativity.sandbox.domain.category.CategoryUpdateDTO;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class DataBuilderForTesting {
 
@@ -67,7 +70,22 @@ public class DataBuilderForTesting {
                 .build();
     }
 
+    public static BookToAuthorDTO createBookToAuthorDTO() {
+        return BookToAuthorDTO.builder()
+                .title("Mushoku Tensei")
+                .price(100.0)
+                .categories(List.of(createCategoryToBookDTO()))
+                .build();
+    }
 
+    public static TinyBookDTO createTinyBookDTO() {
+        return TinyBookDTO.builder()
+                .categories(List.of(createCategoryToBookDTO()))
+                .title("Mushoku Tensei")
+                .identification("identification")
+                .price(100.0)
+                .build();
+    }
 
 
     //Category
@@ -118,6 +136,7 @@ public class DataBuilderForTesting {
                 .name("Rifujin")
                 .surname("na Magonote")
                 .age(30)
+                .books(List.of(createBookToAuthorDTO()))
                 .build();
     }
 

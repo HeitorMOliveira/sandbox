@@ -55,10 +55,8 @@ class CategoryControllerTest {
         Page<CategoryDTO> categoryPage = new PageImpl<CategoryDTO>(List.of(createCategoryDTO()));
         when(categoryService.findAll(any())).thenReturn(categoryPage);
 
-        // Call the findAll method of the controller
         Page<CategoryDTO> resultPage = categoryController.findAll(any());
 
-        // Assertions
         assertNotNull(resultPage);
         assertEquals(resultPage, categoryPage);
         assertEquals(resultPage.getContent().get(0).getName(), categoryPage.getContent().get(0).getName());

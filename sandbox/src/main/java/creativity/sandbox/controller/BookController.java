@@ -60,7 +60,7 @@ public class BookController {
 
     @GetMapping(path = "/findByTitle")
     @ResponseStatus(HttpStatus.OK)
-    public BookDTO findById(@RequestParam String title) {
+    public BookDTO findByTitle(@RequestParam String title) {
         return service.findByTitle(title);
     }
 

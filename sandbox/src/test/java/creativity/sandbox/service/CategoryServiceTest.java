@@ -81,12 +81,12 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("save throws a exception if the category given already exists")
+    @DisplayName("save throws a exception if the given category already exists")
     void saveThrowsException() {
         CategoryCreationDTO creationDTO = createCategoryCreationDTO();
 
         Category category = createCategory();
-        when(categoryRepository.findByName(anyString())).thenReturn(Optional.ofNullable((category)));
+        when(categoryRepository.findByName(anyString())).thenReturn(Optional.of((category)));
 
         assertThrows(EntityCreationExistsException.class, () -> categoryService.save(creationDTO));
     }

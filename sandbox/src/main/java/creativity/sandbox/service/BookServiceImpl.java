@@ -37,8 +37,6 @@ public class BookServiceImpl implements BookService {
 
     private final AuthorRepository authorRepository;
 
-//    private final CategoryService categoryService;
-
 
     @Override
     public BookDTO findById(int id) {

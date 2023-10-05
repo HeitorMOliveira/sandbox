@@ -2,15 +2,14 @@ package creativity.sandbox.service;
 
 import creativity.sandbox.repository.AuthorRepository;
 import creativity.sandbox.repository.BookRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 
-@ExtendWith(MockitoExtension.class)
 class AuthorServiceTest {
 
     @Mock
@@ -21,6 +20,11 @@ class AuthorServiceTest {
 
     @InjectMocks
     private AuthorServiceImpl authorService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     @DisplayName("Should find Author by id")
