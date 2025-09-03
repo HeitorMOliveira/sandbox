@@ -11,6 +11,7 @@ import java.util.Locale;
 
 @Configuration
 public class ValidationConfiguration {
+    //Add more files configurations/jwt and message streaming
 
     @PostConstruct
     public void init() {
